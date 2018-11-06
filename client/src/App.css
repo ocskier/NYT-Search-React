@@ -1,0 +1,30 @@
+/* 
+.main-view {
+    background-size: cover;
+    min-height: 90vh
+}
+
+.card {
+    box-shadow: 2px 4px 10px 2px #2b2828;
+} */
+
+body {
+    background-color: azure
+}
+
+textarea,
+input {
+    display: block;
+    width: 100%;
+    background-color: #FCF5C7;
+}
+
+input {
+    height: 36px;
+    font-size: 24px;
+}
+
+textarea {
+    height: 200px;
+    font-size: 18px;
+}
