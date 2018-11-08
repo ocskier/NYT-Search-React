@@ -1,5 +1,3 @@
-// const articlesController = require("./articlesController");
-const db = require("../models");
 
 const cheerio = require ("cheerio");
 const request = require('request');
@@ -7,7 +5,8 @@ const request = require('request');
 module.exports = {
     
     scrape: (req,res) => {
-    
+        
+        const scrapeArr = [];
     // First, we grab the body of the html with axios
         request("https://www.npr.org/sections/music-news/", function (error, response, body) {
             console.log('error:', error); // Print the error if one occurred
@@ -56,16 +55,11 @@ module.exports = {
                 .attr('src');
     
             // Create a new Article using the `result` object built require scraping
-            db.Article
-                .create(result)
-                .then(dbModel  => 
-                    console.log(dbModel)
-                )
-                .catch(err => res.status(422).json(err));
+            scrapeArr.push(result);
         });
     
         // If we were able to successfully scrape and save an Article, send a message to the client
-        res.json("Succeeded!");
+        res.json(scrapeArr);
         });
 
     }

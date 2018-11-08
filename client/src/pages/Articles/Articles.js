@@ -33,8 +33,8 @@ class Articles extends Component {
 
   cancel = () => {
     this.setState({
-      title: "",
-      body: ""
+      noteTitle: "",
+      noteBody: ""
     },
     $('#modal1').modal('close'))
   }
@@ -109,18 +109,6 @@ class Articles extends Component {
         .catch(err => console.log(err))
       })
   }
-
-  // addArticle = (e) => {
-  //   e.preventDefault();
-  //   API.makeArticle({
-  //   }).then((res) => {
-  //       console.log(res);
-  //       this.setState({
-  //         newlistname: ""
-  //       })
-  //   })
-  //   .catch((err) => console.log(err));
-  // }
 
   render() {
     return (

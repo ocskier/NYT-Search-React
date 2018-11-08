@@ -4,7 +4,8 @@ import Jumbotron from "./components/Jumbotron";
 import Scrape from "./pages/Scrape";
 import Articles from "./pages/Articles";
 import NoMatch from "./pages/NoMatch";
-import {SideNav,SideNavItem} from "react-materialize"
+import {SideNav,SideNavItem} from "react-materialize";
+import { Link } from "react-router-dom";
 
 import "./App.css";
 import API from './utils/API';
@@ -40,6 +41,12 @@ class App extends Component {
 		},() => console.log(this.state))
 	}
 
+	changeStateBack = () => {
+		this.setState({
+			haveArticles: false
+		},() => console.log(this.state))
+	}
+
 	render() {
 		return (
 			<div className="App">
@@ -54,11 +61,10 @@ class App extends Component {
 										email: 'ocskier@gmail.com'
 									}}
 								/>
-								<SideNavItem href='#!icon' icon='cloud'>First Link With Icon</SideNavItem>
-								{/* <SideNavItem href='#!second'>Second Link</SideNavItem>
-								<SideNavItem divider />
-								<SideNavItem subheader>Subheader</SideNavItem>
-								<SideNavItem waves href='#!third'>Third Link With Waves</SideNavItem> */}
+								<SideNavItem icon='cloud' onClick={this.changeStateBack}>New Scrape</SideNavItem>
+								{/* <SideNavItem divider />
+								<SideNavItem subheader>Subheader</SideNavItem> */}
+								<SideNavItem waves onClick={this.changeState}>Saved</SideNavItem>
 							</SideNav>
 							<h1 className="display-4">Mongo Scraper</h1>
 						</Jumbotron>
