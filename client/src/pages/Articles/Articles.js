@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 
-import {Card} from "../../components/Card";
-import Jumbotron from "../../components/Jumbotron";
+// import {Card} from "../../components/Card";
+// import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
-import { List, ListItem } from "../../components/List";
-import {Modal,Collapsible,CollapsibleItem,Input,Row as MatRow} from 'react-materialize';
-import Moment from 'react-moment';
+// import { List, ListItem } from "../../components/List";
+import {Button,Modal,Collapsible,CollapsibleItem,Input,Row as MatRow} from 'react-materialize';
+import moment from 'moment';
 import './Articles.css';
 
 declare var $ : any;
 
 class Articles extends Component {
+  
   state = {
     articles: [],
     articleId: "",
@@ -23,9 +24,11 @@ class Articles extends Component {
 
   
   componentDidMount() {
+    console.log("Here!");
+    this.loadArticles();
     $('#modal1').modal({
       onCloseStart: () => (console.log("got here"))
-    },() => this.getArticles());
+    },() => this.loadArticles())
   }
 
   cancel = () => {
@@ -36,35 +39,39 @@ class Articles extends Component {
     $('#modal1').modal('close'))
   }
 
-  save = (id) => {
+  save = () => {
+    console.log(this.state);
     API.saveNote({
-      title: noteTitle,
-      body: noteBody,
-      date: Moment().format("MMMM Do YYYY HH:mm:ss")
+      title: this.state.noteTitle,
+      body: this.state.noteBody,
+      date: moment().format("MMMM Do YYYY HH:mm:ss")
     })
-    .then(res =>
-      API.updateArticle(id,{
+    .then(res => {
+      console.log(res);
+      API.updateArticle(this.state.articleId,{
         $push: {
           notes: res.data._id
         }
       })
       .then(res => this.loadArticles())
       .catch(err => console.log(err))
-    )
+    })
   .catch(err => console.log(err));
   }
 
-  loadArticles = () =>
+  loadArticles = () => {
     API.getArticles()
-    .then(res =>
-      this.setState({articles: res.data})
-    )
-  .catch(err => console.log(err));
+    .then(res => {
+      this.setState({articles: res.data});
+      console.log(res);
+    })
+    .catch(err => console.log(err));
+  }
 
   removeArticle = id => {
     API.deleteArticle(id)
       .then(res => this.loadArticles())
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   };
 
   handleInputChange = event => {
@@ -74,21 +81,33 @@ class Articles extends Component {
     });
   };
 
-  getNoteDiv = (id) => {
-    this.setState({articleId: id},
-      API.getArticle(id)
+  getNoteDiv = (e) => {
+    e.preventDefault();
+    let el = e.target;
+    this.setState({articleId: el.id}, () => {
+      console.log(this.state)
+      API.getArticle(el.id)
         .then(res => 
-          API.getNote(res.data.notes[res.data.notes.length-1]._id)
-            .then(res => 
-              this.setState({
-                noteTitle: res.data.title,
-                noteBody: res.data.body
+          this.setState({
+            articleTitle: res.data.title
+          }, () => {
+            !(res.data.notes.length === 0) ?
+            API.getNote(res.data.notes[res.data.notes.length-1])
+              .then(res => {
+                console.log(res);
+                this.setState({
+                  noteTitle: res.data.title,
+                  noteBody: res.data.body
+                },
+                () => $("#modal1").modal('open'))
               })
-            )
-          .catch(err => console.log(err))
+              .catch(err => console.log(err))
+            : $("#modal1").modal('open')
+            }
+          )
         )
         .catch(err => console.log(err))
-    )
+      })
   }
 
   // addArticle = (e) => {
@@ -106,57 +125,60 @@ class Articles extends Component {
   render() {
     return (
         <MatRow>
-          <Col>
+          <Col size="s12">
             {
               this.state.articles.map(article => (
-                <Col size="s10" className="w3-card-4" style={{margin:"12px 0"}}>
-                  <MatRow style={{paddingTop:"5px"}}>
-                    <Col>
-                      <Link to={article.link}>
-                        <header className="w3-container w3-blue">
-                          <h1>{article.title}</h1>
-                        </header>
-                      </Link>
-                      <div className="w3-container">
-                        <p>{article.summary}</p>
-                      </div>
-                    </Col>
-                    <Col size="s3">
-                      <Link to={article.link}>
-                        <img src={article.image} className="rounded float-right img-thumbnail" style={{margin:"5px",minHeight:"50%"}} alt="Responsive image"></img>
-                      </Link>
-                    </Col>
-                  </MatRow>
-                  <footer id={article._id} className="w3-container w3-blue">
-                    <h5>{article.date}<button onClick={() => this.getNoteDiv(article._id)} className="modal-trigger" style={{float:"right"}}>Note</button></h5>
-                      {
-                        this.notes.map(note => (
-                            <h5 style={{color:"black",background:"floralwhite"}}>{note.date}<br />{note.title} : {note.body}</h5>
-                        ))
-                      }
-                  </footer>
-                </Col>
+                <MatRow>
+                  <Col key={article._id} size="s10" className="w3-card-4 z-index-4" style={{border: "2px solid",boxShadow:"2px 4px 10px 2px #2b2828",flex:"none",margin:"12px auto"}}>
+                    <MatRow style={{paddingTop:"5px"}}>
+                      <Col size="s9">
+                        <Link to={article.link}>
+                          <header className="w3-container w3-blue">
+                            <h1>{article.title}</h1>
+                          </header>
+                        </Link>
+                        <div className="w3-container">
+                          <p>{article.summary}</p>
+                        </div>
+                      </Col>
+                      <Col size="s3">
+                        <Link to={article.link}>
+                          <img src={article.image} className="rounded float-right img-thumbnail" style={{margin:"5px",minHeight:"50%"}} alt="Responsive image"></img>
+                        </Link>
+                      </Col>
+                    </MatRow>
+                    <footer id={article._id} className="w3-container w3-blue">
+                      <h5>{article.date}
+                        <button onClick={this.getNoteDiv} id={article._id} style={{color:"black",float:"right"}}>Note</button>
+                      </h5>
+                        {
+                          article.notes.map(note => (
+                              <h5 key={note._id} style={{color:"black",background:"floralwhite"}}>{note.date}<br />{note.title} : {note.body}</h5>
+                          ))
+                        }
+                    </footer>
+                  </Col>
+                </MatRow>
               ))
             }
           </Col>
-          <Modal id="modal1" trigger="modal-trigger" header={this.state.articleTitle} fixedFooter style="max-height: 50%"><br />
-            <div id="noteCard" className="modal-content" data-planid="" style={{margin:"0 auto"}}>
-              <div className="modal-content" style={{padding:"0 8px"}}>
-                {/* An input to enter a new title */}
-                <input onChange={this.handleInputChange} name={this.state.noteTitle} placeholder="Subject"></input>
-                {/* A textarea to add a new note body */}
-                <textarea onChange={this.handleInputChange} name={this.state.noteBody} placeholder="Add a Note"></textarea>
+          <Modal id="modal1" header={this.state.articleTitle} fixedFooter style={{maxHeight:"80%"}}
+            actions={
+              <div className="modal-footer" style={{width:"100%",display:"block",paddingTop:"10px"}}>
+                <button style={{margin:"0 20px"}} onClick={this.cancel} className="modal-close waves-effect waves-red left">Exit</button>
+                {/* A button to submit a new note, with the id of the article saved to it */}
+                <button style={{margin:"0 10px"}} onClick={this.save} className="modal-close waves-effect waves-green right">Save</button>
               </div>
-              <div class="modal-footer" style={{display:"block",paddingTop:"10px"}}>
-                  <a href="#!" onClick={this.cancel} className="modal-close waves-effect waves-green left"><button>Exit</button></a>
-                  {/* A button to submit a new note, with the id of the article saved to it */}
-                  <a href="#!" onClick={this.save} className="modal-close waves-effect waves-green"><button>Save</button></a>
-              </div>
-            </div>
-        </Modal>
+            }>
+              <br />
+              {/* An input to enter a new title */}
+              <input onChange={this.handleInputChange} value={this.state.noteTitle} name="noteTitle" placeholder="Subject"></input>
+              {/* A textarea to add a new note body */}
+              <textarea onChange={this.handleInputChange} value={this.state.noteBody} name="noteBody" placeholder="Add a Note"></textarea>                     
+          </Modal>
         </MatRow>
     )
   }
 }
 
-export default Articles;
+export default Articles

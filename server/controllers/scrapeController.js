@@ -1,0 +1,72 @@
+// const articlesController = require("./articlesController");
+const db = require("../models");
+
+const cheerio = require ("cheerio");
+const request = require('request');
+
+module.exports = {
+    
+    scrape: (req,res) => {
+    
+    // First, we grab the body of the html with axios
+        request("https://www.npr.org/sections/music-news/", function (error, response, body) {
+            console.log('error:', error); // Print the error if one occurred
+            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        // Then, we load that into cheerio and save it to $ for a shorthand selector
+        const $ = cheerio.load(body);
+    
+        // Now, we grab every h2 within an article tag, and do the following:
+        $("article", ".list-overflow").each(function(i, element) {
+            // Save an empty result object
+            var result = {};
+    
+            // Add the text and href of every link, and save them as properties of the result object
+            result.title = $(this)
+                .children(".item-info")
+                .children("h2")
+                .children("a")
+                .text();
+            result.link = $(this)
+                .children(".item-info")
+                .children("h2")
+                .children("a")
+                .attr("href");
+            result.date = $(this)
+                .children(".item-info")
+                .children("p")
+                .children("a")
+                .contents()
+                .eq(0)
+                .text()
+                .replace("•", "")
+                .trim();
+            result.summary = $(this)
+                .children(".item-info")
+                .children("p")
+                .children("a")
+                .contents()
+                .eq(1)
+                .text();
+            result.image = $(this)
+                .children(".item-image")
+                .first()
+                .contents()
+                .children('a')
+                .children('img')
+                .attr('src');
+    
+            // Create a new Article using the `result` object built require scraping
+            db.Article
+                .create(result)
+                .then(dbModel  => 
+                    console.log(dbModel)
+                )
+                .catch(err => res.status(422).json(err));
+        });
+    
+        // If we were able to successfully scrape and save an Article, send a message to the client
+        res.json("Succeeded!");
+        });
+
+    }
+}

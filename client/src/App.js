@@ -1,46 +1,85 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Jumbotron from "./components/Jumbotron";
-import Scrape from "./pages/Scrape"
-import Articles from './pages/Articles';
+import Scrape from "./pages/Scrape";
+import Articles from "./pages/Articles";
 import NoMatch from "./pages/NoMatch";
-import {Sidenav} from "react-materialize"
+import {SideNav,SideNavItem} from "react-materialize"
 
 import "./App.css";
-// import API from './utils/API';
+import API from './utils/API';
 
+declare var $ : any;
 class App extends Component {
   
-  state = {
-			haveArticles: false
+  	state = {
+		haveArticles: false
     };
   
 	componentDidMount() {
-		// $('.sidenav').sidenav();
+		API.getArticles()
+		.then((res) => {
+			console.log(res);
+			console.log(res.data.length);
+			!(res.data.length === 0) ? 
+			this.setState({
+				haveArticles: true
+			},() => {
+				console.log(this.state);
+				$('.sidebar').sideNav()
+			})
+			:
+			$('.sidebar').sideNav()
+		})
+		.catch((err) => console.log(err));
 	}
 
+	changeState = () => {
+		this.setState({
+			haveArticles: true
+		},() => console.log(this.state))
+	}
 
 	render() {
 		return (
 			<div className="App">
 					<div>
-            <Jumbotron><h1 className="display-4">Mongo Scraper</h1></Jumbotron>
-
-            <div className="main-view" style={{backgroundImage: `url(${image})`}}>
-              <Switch> {
-                !this.haveArticles ? 
-								<Route exact path="/" component={() => <Scrape />} />
-								:
-								<Route exact path="/articles" component={() => <Articles />} />
-								}
-                <Route component={NoMatch} />
-              </Switch>
-            </div>
-          </div>
-        )}
+            			<Jumbotron>
+							<SideNav trigger={<i className="material-icons left" style={{color:"white",margin:25}}>menu</i>} options={{ closeOnClick: true }}>
+								<SideNavItem userView
+									user={{
+										background: './Images/jordan-whitt-73255-unsplash.jpg',
+										image: './Images/V9H2222Jon.jpg',
+										name: 'Jon Jackson',
+										email: 'ocskier@gmail.com'
+									}}
+								/>
+								<SideNavItem href='#!icon' icon='cloud'>First Link With Icon</SideNavItem>
+								{/* <SideNavItem href='#!second'>Second Link</SideNavItem>
+								<SideNavItem divider />
+								<SideNavItem subheader>Subheader</SideNavItem>
+								<SideNavItem waves href='#!third'>Third Link With Waves</SideNavItem> */}
+							</SideNav>
+							<h1 className="display-4">Mongo Scraper</h1>
+						</Jumbotron>
+						
+						<div className="main-view">
+							<Switch> 
+									{
+										!(this.state.haveArticles) ?
+										<Route exact path="/" component={() => <Scrape artBool={this.changeState.bind(this)} />} />
+										:
+										<Route exact path="/" component={() => <Articles />} />
+									}
+										<Route component={NoMatch} />
+							</Switch>
+						</div>
+          			</div>
 			</div>
 		)
 	}
 }
 
 export default App;
+
+// style={{backgroundImage: `url(${image})

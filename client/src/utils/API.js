@@ -26,5 +26,6 @@ export default {
   
   getArticles: () => {return axios.get("/api/articles")},
   
-  makeArticle: () => {return axios.post('/api/articles')}
+  makeArticle: () => {return axios.post('/api/articles')},
+  getScrape: () => {return axios.get("/api/scrape")}
 };

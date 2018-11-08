@@ -4,8 +4,9 @@ const db = require("../models");
 module.exports = {
   findAll: function(req, res) {
     db.Article
-      .find(req.query)
-      .populate("note")
+      // .find(req.query)
+      .find({})
+      .populate("notes")
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -13,21 +14,16 @@ module.exports = {
   findById: function(req, res) {
     db.Article
       .findById(req.params.id)
-      .populate("wishlist")
+      .populate("notes")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res) {
     db.Article
       .create(req.body)
-      .then(dbModel  => {
-        db.Wishlist.
-        findOneAndUpdate({ _id: dbModel.wishlist }, {$push: {Articles: dbModel._id}})
-          .then(dbUser => {
-            res.json(dbModel)
-          }
-        );
-      })
+      .then(dbModel  => 
+        res.json(dbModel)
+      )
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
