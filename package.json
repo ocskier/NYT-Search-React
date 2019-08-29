@@ -1,10 +1,10 @@
 {
-  "name": "wishlist-app",
+  "name": "npm-music-search-react",
   "version": "1.0.1",
-  "description": "Full Stack React App with Authentication",
+  "description": "",
   "main": "server/server.js",
   "engines": {
-    "node": "8.11.1"
+    "node": "11.6.0"
   },
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
@@ -16,7 +16,7 @@
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
   },
-  "author": "Team 6 (Jon, Charlie, Mike , Sundar)",
+  "author": "Jon Jackson",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^3.5.0",
@@ -45,7 +45,7 @@
     "url": "git+"
   },
   "bugs": {
-    "url": "https://github.com/ocskier/Proj3-Team6/issues"
+    "url": "https://github.com/ocskier/NPR-Music-Search-React/issues"
   },
-  "homepage": "https://github.com/ocskier/Proj3-Team6#readme"
+  "homepage": "https://search-react-app.herokuapp.com/"
 }
