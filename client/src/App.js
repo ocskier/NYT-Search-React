@@ -51,7 +51,7 @@ class App extends Component {
 		return (
 			<div className="App">
 					<div>
-            			<Jumbotron>
+						<Jumbotron>
 							<SideNav trigger={<i className="material-icons left" style={{color:"white",margin:25}}>menu</i>} options={{ closeOnClick: true }}>
 								<SideNavItem userView
 									user={{
@@ -61,10 +61,10 @@ class App extends Component {
 										email: 'ocskier@gmail.com'
 									}}
 								/>
-								<SideNavItem icon='cloud' onClick={this.changeStateBack}>New Scrape</SideNavItem>
+								<SideNavItem icon='cloud'><Link to="/">Saved</Link></SideNavItem>
 								{/* <SideNavItem divider />
 								<SideNavItem subheader>Subheader</SideNavItem> */}
-								<SideNavItem waves onClick={this.changeState}>Saved</SideNavItem>
+								<SideNavItem waves><Link to="/scrape">New Scrape</Link></SideNavItem>
 							</SideNav>
 							<h1 className="display-4">Mongo Scraper</h1>
 						</Jumbotron>
@@ -73,7 +73,7 @@ class App extends Component {
 							<Switch> 
 									{
 										!(this.state.haveArticles) ?
-										<Route exact path="/" component={() => <Scrape artBool={this.changeState.bind(this)} />} />
+										<Route exact path="/scrape" component={() => <Scrape artBool={this.changeState.bind(this)} />} />
 										:
 										<Route exact path="/" component={() => <Articles />} />
 									}
