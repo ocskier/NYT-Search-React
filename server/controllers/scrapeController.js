@@ -7,7 +7,7 @@ module.exports = {
     scrape: (req,res) => {
         
         const scrapeArr = [];
-    // First, we grab the body of the html with axios
+        // First, we grab the body of the html with axios
         request("https://www.npr.org/sections/music-news/", function (error, response, body) {
             console.log('error:', error); // Print the error if one occurred
             console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -59,7 +59,7 @@ module.exports = {
         });
     
         // If we were able to successfully scrape and save an Article, send a message to the client
-        res.json(scrapeArr);
+        console.log(scrapeArr);
         });
 
     }
