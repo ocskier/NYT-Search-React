@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../../components/Grid";
+import { Col } from "../../components/Grid";
 // import { List, ListItem } from "../../components/List";
-import {Button,Modal,Collapsible,CollapsibleItem,Input,Row as MatRow} from 'react-materialize';
+import {Modal,Row as MatRow} from 'react-materialize';
 import moment from 'moment';
 import './Articles.css';
 
@@ -114,8 +114,8 @@ class Articles extends Component {
           <Col size="s12">
             {
               this.state.articles.map(article => (
-                <MatRow>
-                  <Col key={article._id} size="s10" className="w3-card-4 z-index-4" style={{border: "2px solid",boxShadow:"2px 4px 10px 2px #2b2828",flex:"none",margin:"12px auto"}}>
+                <MatRow key={article._id}>
+                  <Col size="s10" className="w3-card-4 z-index-4" style={{border: "2px solid",boxShadow:"2px 4px 10px 2px #2b2828",flex:"none",margin:"12px auto"}}>
                     <MatRow style={{paddingTop:"5px"}}>
                       <Col size="s9">
                         <Link to={article.link}>
@@ -129,7 +129,7 @@ class Articles extends Component {
                       </Col>
                       <Col size="s3">
                         <Link to={article.link}>
-                          <img src={article.image} className="rounded float-right img-thumbnail" style={{margin:"5px",minHeight:"50%"}} alt="Responsive image"></img>
+                          <img src={article.image} className="rounded float-right img-thumbnail" style={{margin:"5px",minHeight:"50%"}} alt="Article Thumbnail"></img>
                         </Link>
                       </Col>
                     </MatRow>

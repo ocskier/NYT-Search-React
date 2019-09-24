@@ -15,32 +15,36 @@ module.exports = {
         const $ = cheerio.load(body);
     
         // Now, we grab every h2 within an article tag, and do the following:
-        $("article", ".list-overflow").each(function(i, element) {
+        $("article").each(function(i, element) {
             // Save an empty result object
             var result = {};
     
             // Add the text and href of every link, and save them as properties of the result object
             result.title = $(this)
-                .children(".item-info")
+                .children(".item-info-wrap")
+                .children()
                 .children("h2")
                 .children("a")
                 .text();
             result.link = $(this)
-                .children(".item-info")
+                .children(".item-info-wrap")
+                .children()
                 .children("h2")
                 .children("a")
                 .attr("href");
             result.date = $(this)
-                .children(".item-info")
+                .children(".item-info-wrap")
+                .children()
                 .children("p")
                 .children("a")
-                .contents()
-                .eq(0)
+                .children("time")
+                .children("span")
                 .text()
                 .replace("•", "")
                 .trim();
             result.summary = $(this)
-                .children(".item-info")
+                .children(".item-info-wrap")
+                .children()
                 .children("p")
                 .children("a")
                 .contents()
@@ -55,11 +59,12 @@ module.exports = {
                 .attr('src');
     
             // Create a new Article using the `result` object built require scraping
-            scrapeArr.push(result);
+            result.title && result.link && result.date && result.summary && scrapeArr.push(result);
         });
     
         // If we were able to successfully scrape and save an Article, send a message to the client
         console.log(scrapeArr);
+        res.send(scrapeArr);
         });
 
     }

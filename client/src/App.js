@@ -35,18 +35,6 @@ class App extends Component {
 		.catch((err) => console.log(err));
 	}
 
-	changeState = () => {
-		this.setState({
-			haveArticles: true
-		},() => console.log(this.state))
-	}
-
-	changeStateBack = () => {
-		this.setState({
-			haveArticles: false
-		},() => console.log(this.state))
-	}
-
 	render() {
 		return (
 			<div className="App">
@@ -61,24 +49,30 @@ class App extends Component {
 										email: 'ocskier@gmail.com'
 									}}
 								/>
-								<SideNavItem icon='cloud'><Link to="/">Saved</Link></SideNavItem>
+								<Link to="/">Saved</Link>
 								{/* <SideNavItem divider />
 								<SideNavItem subheader>Subheader</SideNavItem> */}
-								<SideNavItem waves><Link to="/scrape">New Scrape</Link></SideNavItem>
+								<Link to="/scrape">New Scrape</Link>
 							</SideNav>
 							<h1 className="display-4">Mongo Scraper</h1>
 						</Jumbotron>
 						
 						<div className="main-view">
-							<Switch> 
-									{
-										!(this.state.haveArticles) ?
-										<Route exact path="/scrape" component={() => <Scrape artBool={this.changeState.bind(this)} />} />
-										:
-										<Route exact path="/" component={() => <Articles />} />
-									}
-										<Route component={NoMatch} />
-							</Switch>
+							{
+								this.state.haveArticles && 
+								<Switch> 
+									<Route exact path="/scrape" component={Scrape} />
+									<Route exact path="/" component={Articles} />
+									<Route component={NoMatch} />
+								</Switch>
+							}
+							{
+								!this.state.haveArticles && 
+								<Switch> 
+									<Route exact path="/" component={Scrape} />
+									<Route component={NoMatch} />
+								</Switch>
+							}
 						</div>
           			</div>
 			</div>

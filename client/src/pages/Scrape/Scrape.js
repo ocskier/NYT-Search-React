@@ -2,9 +2,9 @@ import React,{Component} from "react";
 
 import API from "../../utils/API";
 
-import { Col, Row, Container } from "../../components/Grid";
+import { Col } from "../../components/Grid";
 // import { List, ListItem } from "../../components/List";
-import {Button,Modal,Input,Row as MatRow} from 'react-materialize';
+import {Row as MatRow} from 'react-materialize';
 
 import "./Scrape.css";
 
@@ -21,8 +21,9 @@ class Scrape extends Component {
     .then((res) => {
       console.log(res);
       this.setState({articles: res.data},
-        () => console.log(this.state))
-    })
+        () => console.log(this.state)
+      );
+      })
     .catch((err) => {
       console.log(err)
     })
@@ -46,8 +47,8 @@ class Scrape extends Component {
 
   checkSaved = (index) => {
     let tempArr = this.state.articlesAdded;
-    const isSaved = tempArr.find(article =>parseInt(article) === index);
-    console.log(isSaved);
+    const isSaved = tempArr.find(article => Number(article) === index);
+    isSaved && console.log(isSaved);
     return isSaved
   }
 
@@ -76,7 +77,7 @@ class Scrape extends Component {
                         </Col>
                         <Col size="s3">
                           <a href={article.link}>
-                            <img src={article.image} className="rounded float-right img-thumbnail" style={{margin:"5px",minHeight:"50%"}} alt="Responsive image"></img>
+                            <img src={article.image} className="rounded float-right img-thumbnail" style={{margin:"5px",minHeight:"50%"}} alt="Article Thumbnail"></img>
                           </a>
                         </Col>
                       </MatRow>
