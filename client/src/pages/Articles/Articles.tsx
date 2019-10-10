@@ -8,9 +8,38 @@ import {Modal,Row as MatRow} from 'react-materialize';
 import moment from 'moment';
 import './Articles.css';
 
+
+interface P {
+
+}
+interface S {
+  articles: Array<Article>,
+  articleId: string,
+  articleTitle: string,
+  noteTitle: string,
+  noteBody: string
+}
+interface Article {
+  _id: string,
+  title: string,
+  link: string,
+  date: string,
+  summary: string,
+  image: string,
+  notes: Array<string>
+}
+
+interface Note {
+  _id: string,
+  title: string,
+  // `body` is of type String
+  body: string,
+  date: string
+}
+
 declare var $ : any;
 
-class Articles extends Component {
+class Articles extends Component<P,S,Article> {
   
   state = {
     articles: [],
@@ -66,20 +95,20 @@ class Articles extends Component {
     .catch(err => console.log(err));
   }
 
-  removeArticle = id => {
+  removeArticle = (id: string) => {
     API.deleteArticle(id)
       .then(res => this.loadArticles())
       .catch(err => console.log(err))
   };
 
-  handleInputChange = event => {
+  handleInputChange = (event:  React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   };
 
-  getNoteDiv = (e) => {
+  getNoteDiv = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     let el = e.target;
     this.setState({articleId: el.id}, () => {
@@ -113,7 +142,7 @@ class Articles extends Component {
         <MatRow>
           <Col size="s12">
             {
-              this.state.articles.map(article => (
+              this.state.articles.map((article: Article) => (
                 <MatRow key={article._id}>
                   <Col size="s10" className="w3-card-4 z-index-4" style={{border: "2px solid",boxShadow:"2px 4px 10px 2px #2b2828",flex:"none",margin:"12px auto"}}>
                     <MatRow style={{paddingTop:"5px"}}>
@@ -138,7 +167,7 @@ class Articles extends Component {
                         <button onClick={this.getNoteDiv} id={article._id} style={{color:"black",float:"right"}}>Note</button>
                       </h5>
                         {
-                          article.notes.map(note => (
+                          article.notes.map((note: Note) => (
                               <h5 key={note._id} style={{color:"black",background:"floralwhite"}}>{note.date}<br />{note.title} : {note.body}</h5>
                           ))
                         }

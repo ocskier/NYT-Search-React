@@ -7,7 +7,7 @@ interface ColProps {
 }
 
 export const Col = ({ size,children,style}: ColProps & any) => (
-  <div style={style} className={"col "+ size.split(" ").map(size => size).join(" ")}>
+  <div style={style} className={"col "+ size.split(" ").map((size: string) => size).join(" ")}>
     {children}
   </div>
 );

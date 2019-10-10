@@ -3,7 +3,7 @@ import React from "react";
 interface AlertProps {
   type: string;
   style: Object;
-  children: React.ReactChildren;
+  children: string;
 }
 
 const Alert = (props: AlertProps) => (

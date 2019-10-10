@@ -1,1 +1,1 @@
-export { default } from "./Scrape.js";
+export { default } from "./Scrape";

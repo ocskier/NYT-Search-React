@@ -8,7 +8,7 @@ interface CardBtnProps {
 const CardBtn = (props: CardBtnProps) => (
   <button
     onClick={props.onClick}
-    className={`card-btn ${props["data-value"]}`}
+    // className={`card-btn ${props["data-value"]}`}
     {...props}
   />
 );
