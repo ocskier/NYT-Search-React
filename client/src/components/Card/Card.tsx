@@ -1,7 +1,15 @@
 import React from "react";
 import "./FriendCard.css";
 
-export const Card = (props) => (
+interface CardProps {
+  name: string,
+  title: string,
+  children: React.ReactNode,
+  link: string,
+  image: string
+}
+
+export const Card = (props: CardProps) => (
 
   <div className="card">
     <div className="card-image" style={{maxHeight: "100%"}}>

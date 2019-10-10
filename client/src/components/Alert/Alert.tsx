@@ -1,6 +1,12 @@
 import React from "react";
 
-const Alert = props => (
+interface AlertProps {
+  type: string,
+  style: Object,
+  children: React.ReactNode
+}
+
+const Alert = (props: AlertProps) => (
   <div
     role="alert"
     className={`alert alert-${props.type} fade in`}

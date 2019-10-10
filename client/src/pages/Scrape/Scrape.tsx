@@ -59,7 +59,7 @@ class Scrape extends Component {
             <button onClick={this.scrapeArticles} type="button" className="btn btn-info">Scrape</button>
         </div>
         <MatRow>
-          <Col size="s12">
+          <Col style={{}} size="s12">
               {
                 this.state.articles.map((article,index) => (
                   <MatRow key={index}>
