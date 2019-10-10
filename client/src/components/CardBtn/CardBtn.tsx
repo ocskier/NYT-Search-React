@@ -2,7 +2,7 @@ import React from "react";
 import "./CardBtn.css";
 
 interface CardBtnProps {
-  onClick: () => void
+  onClick: () => void;
 }
 
 const CardBtn = (props: CardBtnProps) => (

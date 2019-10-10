@@ -1,6 +1,12 @@
-import React from "react";
+import React, { DetailedHTMLProps } from "react";
 
-export const Col = ({ size,children,style }) => (
+interface ColProps {
+  size: string,
+  children: React.ReactNode,
+  style: Object
+}
+
+export const Col = ({ size,children,style}: ColProps & any) => (
   <div style={style} className={"col "+ size.split(" ").map(size => size).join(" ")}>
     {children}
   </div>

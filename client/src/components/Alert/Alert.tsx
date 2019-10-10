@@ -1,9 +1,9 @@
 import React from "react";
 
 interface AlertProps {
-  type: string,
-  style: Object,
-  children: React.ReactNode
+  type: string;
+  style: Object;
+  children: React.ReactChildren;
 }
 
 const Alert = (props: AlertProps) => (
