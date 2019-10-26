@@ -2,8 +2,7 @@ import axios from "axios";
 
 export default {
   // Gets all Notes
-  getNotes: (id: string) => {return axios.get("/api/notes")}
-  ,
+  getNotes: (id: string) => {return axios.get("/api/notes")},
   
   // Gets the Note with the given id
   getNote: (id: string) => {return axios.get("/api/notes/" + id)},
